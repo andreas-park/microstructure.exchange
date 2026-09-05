@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Microstructure Exchange</title>
+  <meta name="description" content="A virtual academic webinar series for market microstructure research.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <header class="topbar">
+    <nav class="shell nav" aria-label="Primary navigation">
+      <a class="brand" href="index.html" aria-label="The Microstructure Exchange home">
+        <svg class="brand-mark" viewBox="0 0 64 64" role="img" aria-hidden="true">
+          <rect width="64" height="64" rx="10" fill="#2467a6"></rect>
+          <text x="32" y="39" fill="#f7f9fb" font-family="Nunito Sans, Arial, sans-serif" font-size="20" font-weight="800" text-anchor="middle" letter-spacing="1">TME</text>
+        </svg>
+      </a>
+      <div class="navlinks">
+          <a class="active-nav" href="index.html">Home</a>
+          <a href="season.html">Schedule</a>
+          <a href="submission.html">Call for Papers</a>
+          <a href="about.html">About</a>
+          <a href="award.html">WRDS-TME Prize</a>
+          <a href="resources.html">Resources</a>
+          <a href="past-talks.html">Past Talks</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="shell landing-grid">
+        <div class="landing-heading">
+          <p class="eyebrow">Virtual webinar series</p>
+          <h1><span class="initial">T</span>he <span class="initial">M</span>icrostructure <span class="initial">E</span>xchange</h1>
+          <p class="lead">A focused academic forum for market structure research, bringing researchers together for one-hour online webinars, paper discussion, and an always-growing archive of talks.</p>
+        </div>
+        <div class="landing-board">
+          <aside class="hero-panel">
+            <span class="panel-label">Next webinar</span>
+            <div class="countdown-grid" id="webinarCountdown" aria-live="polite">
+              <div class="countdown-unit"><strong>10</strong><span>days</span></div>
+              <div class="countdown-unit"><strong>--</strong><span>hours</span></div>
+              <div class="countdown-unit"><strong>--</strong><span>minutes</span></div>
+              <div class="countdown-unit"><strong>--</strong><span>seconds</span></div>
+            </div>
+            <p class="panel-text"><strong>Farshid Abdi</strong><br>Overnight Corporate Bond Trading<br>September 15, 2026 at 11:00 a.m. ET.</p>
+          </aside>
+          <div class="landing-links">
+            <a class="landing-card" href="submission.html"><strong>Call for papers</strong><span>Submissions are open through December 15, 2026 at 11:59 p.m. EST.</span></a>
+            <a class="landing-card" href="season.html"><strong>Schedule</strong><span>Upcoming 2026-27 webinar dates and confirmed presenters.</span></a>
+            <a class="landing-card" href="https://us06web.zoom.us/j/84504721258?pwd=I2cR9GtVjSa0myOQKYdxRTvQ1PHENW.1"><strong>Zoom link</strong><span>Join the webinar room for the current season.</span></a>
+            <a class="landing-card" href="https://1db8a3f8.sibforms.com/serve/MUIFAPnhAYixdE4HFqDigjZhIis9UvKWQTapm6L4Jyq9VylkDMqszJEmCn6IUQDu1PDRI9dIqf88NVP0BAYxzY-vnWDANn_0eWCSgJ7p4VFriN1ZUeST_o8HJVPSLQ_YLBqi8cEIftFOsEUAlGGLJWhJ2eDDefnZpbIGfz50AsqEHwU2YYMz8vCP9XT5BHq5a0NkoOaSBJvtIbmr"><strong>Mailing list</strong><span>Receive webinar announcements, calls, and community updates.</span></a>
+            <a class="landing-card" href="TME_schedule_2026-27.ics"><strong>Calendar</strong><span>Download the 2026-27 TME calendar with webinar dates and Zoom link.</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-row">
+      <span>The Microstructure Exchange is maintained by the <a href="about.html">organizers</a>.</span>
+      <a href="mailto:contact@microstructure.exchange">contact@microstructure.exchange</a>
+    </div>
+  </footer>
+<script>
+  const countdown = document.querySelector("#webinarCountdown");
+  const nextTalk = new Date("2026-09-15T11:00:00-04:00");
+
+  function pluralize(value, unit) {
+    return value === 1 ? unit : unit + "s";
+  }
+
+  function updateCountdown() {
+    if (!countdown) return;
+    const now = new Date();
+    const diff = nextTalk.getTime() - now.getTime();
+
+    if (diff <= 0) {
+      countdown.innerHTML = '<div class="countdown-unit"><strong>Now</strong><span>live</span></div>';
+      return;
+    }
+
+    const totalSeconds = Math.floor(diff / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    countdown.innerHTML = [
+      [days, pluralize(days, "day")],
+      [hours, pluralize(hours, "hour")],
+      [minutes, pluralize(minutes, "minute")],
+      [seconds, pluralize(seconds, "second")],
+    ].map(([value, label]) => '<div class="countdown-unit"><strong>' + value + '</strong><span>' + label + '</span></div>').join("");
+  }
+
+  updateCountdown();
+  window.setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
