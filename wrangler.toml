@@ -1,0 +1,24 @@
+name = "tme-best-paper-vote"
+main = "src/worker.js"
+compatibility_date = "2026-06-01"
+workers_dev = true
+preview_urls = true
+routes = [
+  { pattern = "andreaspark.com/tme-best-paper-vote-2026*", zone_name = "andreaspark.com" },
+  { pattern = "microstructure.exchange/tme-paper-assessment-2026*", zone_name = "microstructure.exchange" },
+  { pattern = "microstructure.exchange/tme-paper-submission*", zone_name = "microstructure.exchange" }
+]
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "tme-best-paper"
+database_id = "1aed3973-51a8-4277-9526-b525c19f75a6"
+migrations_dir = "migrations"
+
+[[r2_buckets]]
+binding = "PAPERS"
+bucket_name = "tme-review-papers"

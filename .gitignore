@@ -1,0 +1,19 @@
+.DS_Store
+node_modules/
+.wrangler/
+.dev.vars
+.env
+.env.*
+generated/
+tmp-generated/
+*.log
+
+# Keep submitted papers and exports out of GitHub.
+outputs/
+papers/
+*.xlsx
+*.xls
+*.csv
+*.pdf
+*.doc
+*.docx
