@@ -44,10 +44,10 @@
           <aside class="hero-panel">
             <span class="panel-label">Next webinar</span>
             <div class="countdown-grid" id="webinarCountdown" aria-live="polite">
-              <div class="countdown-unit"><strong>10 days, -- hours, -- minutes, -- seconds</strong><span>until the next webinar</span></div>
+              <div class="countdown-unit"><strong>--:--:--:--.---</strong><span>until the next webinar</span></div>
             </div>
-            <p class="panel-text"><strong>Farshid Abdi</strong><br>Overnight Corporate Bond Trading<br><span class="season-authors">with Marco Rossi and Botao Wu</span><br>September 15, 2026 at 11:00 a.m. ET.</p>
-            <div class="archive-links hero-actions">
+            <p class="panel-text" id="nextTalkDetails"><strong>Farshid Abdi</strong><br>Overnight Corporate Bond Trading<br><span class="season-authors">with Marco Rossi and Botao Wu</span><br>September 15, 2026 at 11:00 a.m. ET.</p>
+            <div class="archive-links hero-actions" id="nextTalkActions">
               <a class="pill" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7198520">paper</a>
               <a class="pill" href="https://us06web.zoom.us/j/84504721258?pwd=I2cR9GtVjSa0myOQKYdxRTvQ1PHENW.1">Zoom</a>
             </div>
@@ -70,40 +70,114 @@
     </div>
   </footer>
 <script>
-  const countdown = document.querySelector("#webinarCountdown");
-  const nextTalk = new Date("2026-09-15T11:00:00-04:00");
+  const seasonTalks = [{"date":"Tue, Sep 15, 2026","presenter":"Farshid Abdi","title":"Overnight Corporate Bond Trading","authors":"Farshid Abdi; Marco Rossi; Botao Wu","paperUrl":"https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7198520","startIso":"2026-09-15T11:00:00-04:00"},{"date":"Tue, Sep 29, 2026","presenter":"Fayçal Drissi","title":"The Viability of Blockchain Markets under Discrete Clearing and Paid Priority","authors":"Fayçal Drissi; Agostino Capponi; Alvaro Cartea","paperUrl":"https://www.jotform.com/uploads/parkandreas/261178705375261/6552521678231832508/Viability_of_Blockchain_Markets-5.pdf","startIso":"2026-09-29T11:00:00-04:00"},{"date":"Tue, Oct 13, 2026","presenter":"Luca Galati","title":"Not Dead Yet: Options Trading Floors","authors":"Luca Galati; Terrence Hendershott; Saad Ali Khan; Ryan Riordan","paperUrl":"https://www.jotform.com/uploads/parkandreas/261178705375261/6564832278716634997/Floor_Trading_blind.pdf","startIso":"2026-10-13T11:00:00-04:00"},{"date":"Tue, Oct 27, 2026","presenter":"Vincent Grégoire","title":"Who Wins and Who Loses in Prediction Markets: Evidence from Polymarket","authors":"Vincent Grégoire; Charles Martineau; Pat Akey; Nicolas Harvie","paperUrl":"https://www.jotform.com/uploads/parkandreas/261178705375261/6582902557153129995/main.pdf","startIso":"2026-10-27T11:00:00-04:00"},{"date":"Tue, Nov 10, 2026","presenter":"Thierry Foucault","title":"The Price of Exchange Data","authors":"Thierry Foucault; Vincent Maurin","paperUrl":"","startIso":"2026-11-10T11:00:00-04:00"},{"date":"Tue, Nov 24, 2026","presenter":"Albert Menkveld","title":"Does News Trading Crowd Out Value Trading? Evidence from a Structural Estimation","authors":"Albert J. Menkveld; Lucas Saru","paperUrl":"https://www.jotform.com/uploads/parkandreas/261178705375261/6579179340215105939/mdsu1-no-first-page.pdf","startIso":"2026-11-24T11:00:00-04:00"},{"date":"Tue, Dec 8, 2026","presenter":"Chaojun Wang","title":"Shadow Discounts","authors":"Chaojun Wang; Tomy Lee; Isacco Lotti; Florian Nagler; Giorgio Ottonello","paperUrl":"","startIso":"2026-12-08T11:00:00-04:00"}];
 
-  function pluralize(value, unit) {
-    return value === 1 ? unit : unit + "s";
+  function escapeHtml(value) {
+    return String(value || "").replace(/[&<>"']/g, (character) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    }[character]));
+  }
+
+  function escapeAttribute(value) {
+    return escapeHtml(value).replace(/\n/g, " ");
+  }
+
+  function formatTalkDate(startIso) {
+    return new Intl.DateTimeFormat("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      timeZone: "America/New_York",
+      timeZoneName: "short",
+    }).format(new Date(startIso));
+  }
+
+  function renderTalkActions(talk, includeZoom = false) {
+    const links = [];
+    if (talk.paperUrl) links.push('<a class="pill" href="' + escapeAttribute(talk.paperUrl) + '">paper</a>');
+    if (talk.recordingUrl) links.push('<a class="pill" href="' + escapeAttribute(talk.recordingUrl) + '">recording</a>');
+    if (includeZoom) links.push('<a class="pill" href="https://us06web.zoom.us/j/84504721258?pwd=I2cR9GtVjSa0myOQKYdxRTvQ1PHENW.1">Zoom</a>');
+    return links.join("");
+  }
+
+  const countdown = document.querySelector("#webinarCountdown");
+  const nextTalkDetails = document.querySelector("#nextTalkDetails");
+  const nextTalkActions = document.querySelector("#nextTalkActions");
+  let nextTalk = null;
+
+  function pad(value, length = 2) {
+    return String(value).padStart(length, "0");
+  }
+
+  function findNextTalk() {
+    const now = new Date();
+    return seasonTalks
+      .map((talk) => ({ ...talk, start: new Date(talk.startIso) }))
+      .filter((talk) => talk.start.getTime() + 60 * 60 * 1000 > now.getTime())
+      .sort((a, b) => a.start - b.start)[0] || null;
+  }
+
+  function renderNextTalk() {
+    nextTalk = findNextTalk();
+
+    if (!nextTalk) {
+      if (countdown) countdown.innerHTML = '<div class="countdown-unit"><strong>Season complete</strong><span>next season to be announced</span></div>';
+      if (nextTalkDetails) nextTalkDetails.innerHTML = '<strong>Next season to be announced</strong>';
+      if (nextTalkActions) nextTalkActions.innerHTML = '<a class="pill" href="season.html">schedule</a>';
+      return;
+    }
+
+    if (nextTalkDetails) {
+      nextTalkDetails.innerHTML =
+        '<strong>' + escapeHtml(nextTalk.presenter) + '</strong><br>' +
+        escapeHtml(nextTalk.title) + '<br>' +
+        '<span class="season-authors">with ' + escapeHtml(nextTalk.authors.replace(/^.*?;\s*/, "").replace(/;\s*/g, " and ")) + '</span><br>' +
+        formatTalkDate(nextTalk.startIso) + '.';
+    }
+
+    if (nextTalkActions) {
+      nextTalkActions.innerHTML = renderTalkActions(nextTalk, true);
+    }
   }
 
   function updateCountdown() {
     if (!countdown) return;
+    if (!nextTalk) {
+      renderNextTalk();
+      if (!nextTalk) return;
+    }
+
     const now = new Date();
-    const diff = nextTalk.getTime() - now.getTime();
+    const diff = nextTalk.start.getTime() - now.getTime();
 
     if (diff <= 0) {
-      countdown.innerHTML = '<div class="countdown-unit"><strong>Now live</strong><span>September 15, 2026 at 11:00 a.m. ET</span></div>';
+      countdown.innerHTML = '<div class="countdown-unit"><strong>00:00:00:00.000</strong><span>webinar in progress</span></div>';
       return;
     }
 
-    const totalSeconds = Math.floor(diff / 1000);
-    const days = Math.floor(totalSeconds / 86400);
-    const hours = Math.floor((totalSeconds % 86400) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
+    const totalMs = Math.max(0, diff);
+    const days = Math.floor(totalMs / 86400000);
+    const hours = Math.floor((totalMs % 86400000) / 3600000);
+    const minutes = Math.floor((totalMs % 3600000) / 60000);
+    const seconds = Math.floor((totalMs % 60000) / 1000);
+    const milliseconds = totalMs % 1000;
 
     countdown.innerHTML =
       '<div class="countdown-unit"><strong>' +
-      days + ' ' + pluralize(days, "day") + ', ' +
-      hours + ' ' + pluralize(hours, "hour") + ', ' +
-      minutes + ' ' + pluralize(minutes, "minute") + ', ' +
-      seconds + ' ' + pluralize(seconds, "second") +
+      pad(days) + ':' + pad(hours) + ':' + pad(minutes) + ':' + pad(seconds) + '.' + pad(milliseconds, 3) +
       '</strong><span>until the next webinar</span></div>';
   }
 
+  renderNextTalk();
   updateCountdown();
-  window.setInterval(updateCountdown, 1000);
+  window.setInterval(updateCountdown, 83);
 </script>
 </body>
 </html>

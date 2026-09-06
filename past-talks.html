@@ -43,6 +43,7 @@
     <section class="content-band">
       <div class="shell">
         <div class="archive" id="archiveList">
+          <div id="currentSeasonPast"></div>
           <article class="archive-item" data-talk="Paige Rowberry Does Market Fragmentation Improve Price Efficiency?">
           <div><strong>Paige Rowberry</strong><span>Does Market Fragmentation Improve Price Efficiency?</span></div>
           <div class="archive-links">
@@ -808,6 +809,64 @@
       <a href="mailto:contact@microstructure.exchange">contact@microstructure.exchange</a>
     </div>
   </footer>
+<script>
+  const seasonTalks = [{"date":"Tue, Sep 15, 2026","presenter":"Farshid Abdi","title":"Overnight Corporate Bond Trading","authors":"Farshid Abdi; Marco Rossi; Botao Wu","paperUrl":"https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7198520","startIso":"2026-09-15T11:00:00-04:00"},{"date":"Tue, Sep 29, 2026","presenter":"Fayçal Drissi","title":"The Viability of Blockchain Markets under Discrete Clearing and Paid Priority","authors":"Fayçal Drissi; Agostino Capponi; Alvaro Cartea","paperUrl":"https://www.jotform.com/uploads/parkandreas/261178705375261/6552521678231832508/Viability_of_Blockchain_Markets-5.pdf","startIso":"2026-09-29T11:00:00-04:00"},{"date":"Tue, Oct 13, 2026","presenter":"Luca Galati","title":"Not Dead Yet: Options Trading Floors","authors":"Luca Galati; Terrence Hendershott; Saad Ali Khan; Ryan Riordan","paperUrl":"https://www.jotform.com/uploads/parkandreas/261178705375261/6564832278716634997/Floor_Trading_blind.pdf","startIso":"2026-10-13T11:00:00-04:00"},{"date":"Tue, Oct 27, 2026","presenter":"Vincent Grégoire","title":"Who Wins and Who Loses in Prediction Markets: Evidence from Polymarket","authors":"Vincent Grégoire; Charles Martineau; Pat Akey; Nicolas Harvie","paperUrl":"https://www.jotform.com/uploads/parkandreas/261178705375261/6582902557153129995/main.pdf","startIso":"2026-10-27T11:00:00-04:00"},{"date":"Tue, Nov 10, 2026","presenter":"Thierry Foucault","title":"The Price of Exchange Data","authors":"Thierry Foucault; Vincent Maurin","paperUrl":"","startIso":"2026-11-10T11:00:00-04:00"},{"date":"Tue, Nov 24, 2026","presenter":"Albert Menkveld","title":"Does News Trading Crowd Out Value Trading? Evidence from a Structural Estimation","authors":"Albert J. Menkveld; Lucas Saru","paperUrl":"https://www.jotform.com/uploads/parkandreas/261178705375261/6579179340215105939/mdsu1-no-first-page.pdf","startIso":"2026-11-24T11:00:00-04:00"},{"date":"Tue, Dec 8, 2026","presenter":"Chaojun Wang","title":"Shadow Discounts","authors":"Chaojun Wang; Tomy Lee; Isacco Lotti; Florian Nagler; Giorgio Ottonello","paperUrl":"","startIso":"2026-12-08T11:00:00-04:00"}];
 
+  function escapeHtml(value) {
+    return String(value || "").replace(/[&<>"']/g, (character) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    }[character]));
+  }
+
+  function escapeAttribute(value) {
+    return escapeHtml(value).replace(/\n/g, " ");
+  }
+
+  function formatTalkDate(startIso) {
+    return new Intl.DateTimeFormat("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      timeZone: "America/New_York",
+      timeZoneName: "short",
+    }).format(new Date(startIso));
+  }
+
+  function renderTalkActions(talk, includeZoom = false) {
+    const links = [];
+    if (talk.paperUrl) links.push('<a class="pill" href="' + escapeAttribute(talk.paperUrl) + '">paper</a>');
+    if (talk.recordingUrl) links.push('<a class="pill" href="' + escapeAttribute(talk.recordingUrl) + '">recording</a>');
+    if (includeZoom) links.push('<a class="pill" href="https://us06web.zoom.us/j/84504721258?pwd=I2cR9GtVjSa0myOQKYdxRTvQ1PHENW.1">Zoom</a>');
+    return links.join("");
+  }
+
+  const currentSeasonPast = document.querySelector("#currentSeasonPast");
+
+  function renderCurrentSeasonPast() {
+    if (!currentSeasonPast) return;
+    const now = new Date();
+    const completed = seasonTalks
+      .map((talk) => ({ ...talk, start: new Date(talk.startIso) }))
+      .filter((talk) => talk.start.getTime() + 60 * 60 * 1000 < now.getTime())
+      .sort((a, b) => b.start - a.start);
+
+    currentSeasonPast.innerHTML = completed.map((talk) => {
+      const actions = renderTalkActions(talk);
+      return '<article class="archive-item" data-talk="' + escapeAttribute(talk.presenter + " " + talk.title) + '">' +
+        '<div><strong>' + escapeHtml(talk.presenter) + '</strong><span>' + escapeHtml(talk.title) + '</span><span class="season-authors">' + escapeHtml(talk.authors) + '</span></div>' +
+        '<div class="archive-links">' + (actions || '<span class="pill disabled">paper</span><span class="pill disabled">recording</span>') + '</div>' +
+      '</article>';
+    }).join("");
+  }
+
+  renderCurrentSeasonPast();
+</script>
 </body>
 </html>
