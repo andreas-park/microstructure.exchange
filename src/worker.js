@@ -448,6 +448,7 @@ async function handlePaperSubmission(request, env) {
 
   const form = await request.formData();
   const title = cleanText(form.get("title"), 300);
+  const abstract = cleanText(form.get("abstract"), 3500);
   const submitterName = cleanText(form.get("submitterName"), 160);
   const submitterEmail = cleanEmail(form.get("submitterEmail"));
   const file = form.get("paper");
@@ -455,6 +456,10 @@ async function handlePaperSubmission(request, env) {
 
   if (!title) {
     return json({ error: "Paper title is required" }, 400);
+  }
+
+  if (!abstract) {
+    return json({ error: "Paper abstract is required" }, 400);
   }
 
   if (!submitterName || !submitterEmail) {
@@ -496,6 +501,7 @@ async function handlePaperSubmission(request, env) {
       call_id,
       submission_number,
       title,
+      abstract,
       submitter_name,
       submitter_email,
       coauthors_json,
@@ -512,13 +518,14 @@ async function handlePaperSubmission(request, env) {
     VALUES (
       ?,
       (SELECT COALESCE(MAX(submission_number), 0) + 1 FROM paper_submissions WHERE call_id = ?),
-      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
     )
     RETURNING id, submission_number
   `).bind(
     SUBMISSION_CALL_ID,
     SUBMISSION_CALL_ID,
     title,
+    abstract,
     submitterName,
     submitterEmail,
     JSON.stringify(coauthors),
@@ -571,6 +578,7 @@ async function handleSubmissionsExport(request, env) {
     "call_id",
     "submission_number",
     "title",
+    "abstract",
     "submitter_name",
     "submitter_email",
     "author_names",
@@ -589,6 +597,7 @@ async function handleSubmissionsExport(request, env) {
       call_id,
       submission_number,
       title,
+      abstract,
       submitter_name,
       submitter_email,
       author_names,

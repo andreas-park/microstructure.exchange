@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS paper_submissions (
   call_id TEXT NOT NULL,
   submission_number INTEGER NOT NULL,
   title TEXT NOT NULL,
+  abstract TEXT,
   submitter_name TEXT NOT NULL,
   submitter_email TEXT NOT NULL,
   coauthors_json TEXT NOT NULL DEFAULT '[]',

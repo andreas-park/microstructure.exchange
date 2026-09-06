@@ -51,6 +51,10 @@
           <label for="title">Paper title</label>
           <input id="title" name="title" type="text" required maxlength="300" autocomplete="off">
 
+          <label for="abstract">Abstract</label>
+          <textarea id="abstract" name="abstract" required maxlength="3500" rows="8" autocomplete="off"></textarea>
+          <p class="hint">Please paste the paper abstract. This helps us prepare the public schedule if the paper is accepted.</p>
+
           <label class="upload-label" for="paper">Upload anonymous paper PDF</label>
           <div class="dropzone" id="paperDropzone" role="button" tabindex="0" aria-label="Choose or drop anonymous paper PDF">
             <input id="paper" name="paper" type="file" required accept=".pdf,application/pdf">
