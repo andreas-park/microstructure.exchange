@@ -150,7 +150,7 @@ function readCoauthors() {
 }
 
 function setEnabled(enabled) {
-  for (const input of els.form.querySelectorAll("input, button")) {
+  for (const input of els.form.querySelectorAll("input, textarea, button")) {
     input.disabled = !enabled;
   }
 }

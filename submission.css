@@ -255,7 +255,8 @@ label {
   font-weight: 700;
 }
 
-input {
+input,
+textarea {
   width: 100%;
   min-height: 44px;
   border: 1px solid #c9d2dc;
@@ -266,7 +267,13 @@ input {
   padding: 9px 11px;
 }
 
-input:focus {
+textarea {
+  min-height: 180px;
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus {
   border-color: var(--blue);
   outline: 3px solid rgba(36, 103, 166, 0.16);
 }
@@ -346,7 +353,8 @@ button {
 }
 
 button:disabled,
-input:disabled {
+input:disabled,
+textarea:disabled {
   cursor: not-allowed;
   opacity: 0.58;
 }

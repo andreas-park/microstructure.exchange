@@ -973,14 +973,12 @@ h1 {
 
 .landing-board {
   display: grid;
-  grid-template-columns: 360px minmax(0, 1fr);
   gap: 16px;
-  align-items: stretch;
 }
 
 .landing-links {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   margin-top: 0;
 }
@@ -1121,6 +1119,49 @@ h1 {
   font-size: 0.95rem;
 }
 
+.abstract-toggle {
+  margin-top: 14px;
+}
+
+.abstract-toggle summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 35px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  background: #e8eef5;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 650;
+  list-style: none;
+  text-transform: lowercase;
+}
+
+.abstract-toggle summary::-webkit-details-marker {
+  display: none;
+}
+
+.abstract-toggle summary::after {
+  content: "+";
+  margin-left: 10px;
+  color: var(--teal-dark);
+  font-weight: 800;
+}
+
+.abstract-toggle[open] summary::after {
+  content: "-";
+}
+
+.abstract-toggle p {
+  margin: 14px 0 0;
+  padding: 16px 18px;
+  background: #f2f5f8;
+  color: #283347;
+  font-size: 0.94rem;
+  line-height: 1.58;
+}
+
 .archive-item {
   background: #fff;
 }
@@ -1129,6 +1170,10 @@ h1 {
   background: #f2f5f8;
   padding: 28px;
   align-self: stretch;
+  display: grid;
+  grid-template-columns: minmax(260px, 0.88fr) minmax(320px, 1.12fr);
+  gap: 28px;
+  align-items: start;
 }
 
 .panel-text {
@@ -1137,6 +1182,28 @@ h1 {
 
 .hero-actions {
   margin-top: 18px;
+}
+
+.next-abstract {
+  margin-top: 0;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.next-abstract strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.next-abstract p {
+  margin: 0;
+  color: #283347;
+  font-size: 0.93rem;
+  line-height: 1.55;
 }
 
 .card h2 + p {
@@ -1249,7 +1316,8 @@ h1 {
 @media (max-width: 900px) {
   .landing-grid,
   .landing-board,
-  .landing-links {
+  .landing-links,
+  .hero-panel {
     grid-template-columns: 1fr;
   }
 
