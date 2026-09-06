@@ -44,12 +44,9 @@
           <aside class="hero-panel">
             <span class="panel-label">Next webinar</span>
             <div class="countdown-grid" id="webinarCountdown" aria-live="polite">
-              <div class="countdown-unit"><strong>10</strong><span>days</span></div>
-              <div class="countdown-unit"><strong>--</strong><span>hours</span></div>
-              <div class="countdown-unit"><strong>--</strong><span>minutes</span></div>
-              <div class="countdown-unit"><strong>--</strong><span>seconds</span></div>
+              <div class="countdown-unit"><strong>10 days, -- hours, -- minutes, -- seconds</strong><span>until the next webinar</span></div>
             </div>
-            <p class="panel-text"><strong>Farshid Abdi</strong><br>Overnight Corporate Bond Trading<br>September 15, 2026 at 11:00 a.m. ET.</p>
+            <p class="panel-text"><strong>Farshid Abdi</strong><br>Overnight Corporate Bond Trading<br><span class="season-authors">with Marco Rossi and Botao Wu</span><br>September 15, 2026 at 11:00 a.m. ET.</p>
             <div class="archive-links hero-actions">
               <a class="pill" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7198520">paper</a>
               <a class="pill" href="https://us06web.zoom.us/j/84504721258?pwd=I2cR9GtVjSa0myOQKYdxRTvQ1PHENW.1">Zoom</a>
@@ -86,7 +83,7 @@
     const diff = nextTalk.getTime() - now.getTime();
 
     if (diff <= 0) {
-      countdown.innerHTML = '<div class="countdown-unit"><strong>Now</strong><span>live</span></div>';
+      countdown.innerHTML = '<div class="countdown-unit"><strong>Now live</strong><span>September 15, 2026 at 11:00 a.m. ET</span></div>';
       return;
     }
 
@@ -96,12 +93,13 @@
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
 
-    countdown.innerHTML = [
-      [days, pluralize(days, "day")],
-      [hours, pluralize(hours, "hour")],
-      [minutes, pluralize(minutes, "minute")],
-      [seconds, pluralize(seconds, "second")],
-    ].map(([value, label]) => '<div class="countdown-unit"><strong>' + value + '</strong><span>' + label + '</span></div>').join("");
+    countdown.innerHTML =
+      '<div class="countdown-unit"><strong>' +
+      days + ' ' + pluralize(days, "day") + ', ' +
+      hours + ' ' + pluralize(hours, "hour") + ', ' +
+      minutes + ' ' + pluralize(minutes, "minute") + ', ' +
+      seconds + ' ' + pluralize(seconds, "second") +
+      '</strong><span>until the next webinar</span></div>';
   }
 
   updateCountdown();

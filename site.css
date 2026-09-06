@@ -920,34 +920,28 @@ h1 {
 }
 
 .countdown-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  display: block;
   margin-top: 20px;
 }
 
 .countdown-unit {
   border: 0;
   border-radius: 4px;
-  padding: 12px;
+  padding: 14px 16px;
   background: #fff;
-}
-
-.countdown-unit:nth-child(2n) {
-  background: #e8eef5;
 }
 
 .countdown-unit strong {
   display: block;
-  font-size: clamp(1.75rem, 3vw, 2.35rem);
-  line-height: 0.95;
+  font-size: clamp(1.1rem, 2vw, 1.42rem);
+  line-height: 1.1;
 }
 
 .countdown-unit span {
   display: block;
   margin-top: 7px;
   color: var(--muted);
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
   font-weight: 520;
 }
