@@ -18,8 +18,6 @@ The public website can be previewed by serving the `public/` folder locally.
 
 ## Deployment
 
-The live site is deployed by GitHub Actions after every push to `main`, once this repository secret is set:
+This repository is no longer the intended source for live website deployments. Going forward, deploys should come from `just-cameron/microstructure.exchange`.
 
-- `CLOUDFLARE_API_TOKEN`
-
-The action runs `npm run deploy`, which deploys the Cloudflare Worker, static website assets, and existing submission/review routes. Submitted papers and submission records remain in Cloudflare R2/D1; they are not committed to GitHub.
+Submitted papers and submission records remain in Cloudflare R2/D1; they are not committed to GitHub.
