@@ -19,11 +19,11 @@ Submission metadata is stored in D1 table `paper_submissions`.
 
 Uploaded files are stored in R2 bucket `tme-review-papers` under:
 
-`submissions/fall2026/`
+`submissions/winter2027/`
 
 The Worker assigns the next submission number and stores files as:
 
-`TME_fall2026_submission_<number>.<ext>`
+`TME_winter2027_submission_<number>.<ext>`
 
 ## Export
 

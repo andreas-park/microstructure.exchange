@@ -1,8 +1,8 @@
 const VOTE_ROUTE_PREFIX = "/tme-best-paper-vote-2026";
 const ASSESSMENT_ROUTE_PREFIX = "/tme-paper-assessment-2026";
 const SUBMISSION_ROUTE_PREFIX = "/tme-paper-submission";
-const SUBMISSION_CALL_ID = "fall2026";
-const SUBMISSION_R2_PREFIX = "submissions/fall2026";
+const SUBMISSION_CALL_ID = "winter2027";
+const SUBMISSION_R2_PREFIX = "submissions/winter2027";
 const MAX_SUBMISSION_BYTES = 10 * 1024 * 1024;
 
 const JSON_HEADERS = {
