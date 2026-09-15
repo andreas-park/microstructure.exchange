@@ -18,4 +18,9 @@ The public website can be previewed by serving the `public/` folder locally.
 
 ## Deployment
 
-Cloudflare should deploy from this repository when ready. The repository push alone does not connect or change the `microstructure.exchange` domain.
+The live site is deployed by GitHub Actions after every push to `main`, once these repository secrets are set:
+
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+
+The action runs `npm run deploy`, which deploys the Cloudflare Worker, static website assets, and existing submission/review routes. Submitted papers and submission records remain in Cloudflare R2/D1; they are not committed to GitHub.
